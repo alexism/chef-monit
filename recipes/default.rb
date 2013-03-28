@@ -32,10 +32,10 @@ service "monit" do
   service_name "monit"
 
   case node["platform"]
-  when platform_family?("rhel"), platform_family?("fedora"), platform_family?("suse")
+  when node[:platform_family] == "rhel", node[:platform_family] == "fedora", node[:platform_family] == "suse"
     start_command "/sbin/service monit start"
     restart_command "/sbin/service monit restart"
-  when platform_family?("debian")
+  when node[:platform_family] == "debian"
     start_command "/usr/sbin/invoke-rc.d monit start"
     restart_command "/usr/sbin/invoke-rc.d monit restart"
   end
@@ -51,7 +51,7 @@ service "monit" do
   action :enable
 end
 
-if platform_family?("debian")
+if node[:platform_family] == "debian"
   # enable startup
   execute "enable-monit-startup" do
     command "/bin/sed s/startup=0/startup=1/ -i /etc/default/monit"

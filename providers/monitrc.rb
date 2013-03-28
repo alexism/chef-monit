@@ -6,7 +6,7 @@ action :create do
     source new_resource.template_source || "#{new_resource.name}.monitrc.erb"
     cookbook new_resource.template_cookbook
     variables new_resource.variables
-    notifies :restart, "service[monit]", :immediately
+    notifies :restart, resources(:service => "monit"), :immediately
     action :create
   end
 
